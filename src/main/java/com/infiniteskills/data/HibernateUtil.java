@@ -1,9 +1,9 @@
 package com.infiniteskills.data;
 
-import com.infiniteskills.data.entities.User;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil {
 
@@ -11,18 +11,17 @@ public class HibernateUtil {
 
     private static SessionFactory buildSessionFactory() {
         try {
-            Configuration configuration = new Configuration();
-            configuration.addAnnotatedClass(User.class);
-            return configuration
-                    .buildSessionFactory(new StandardServiceRegistryBuilder()
-                            .build());
+            final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().
+                    configure().
+                    build();
+            return new MetadataSources(registry).buildMetadata().buildSessionFactory();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("There was an error building the factory");
         }
     }
 
-    public static SessionFactory getSessionFactory(){
+    public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 }
