@@ -1,7 +1,8 @@
 package com.infiniteskills.data;
 
-import com.infiniteskills.data.entities.User;
+import com.infiniteskills.data.entities.Bank;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.util.Date;
 
@@ -10,26 +11,31 @@ public class Application {
 
     public static void main(String[] args) {
         Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Transaction transaction = session.beginTransaction();
 
-        session.getTransaction().begin();
-        User user = new User();
-        user.setBirthDate(new Date());
-        user.setCreatedBy("kevin");
-        user.setCreatedDate(new Date());
-        user.setEmailAddress("kmb385@yahoo.com");
-        user.setFirstName("Maria");
-        user.setLastName("Fintesteanu");
-        user.setLastUpdatedBy("kevin");
-        user.setLastUpdatedDate(new Date());
-        session.save(user);
-        session.getTransaction().commit();
+            Bank bank = new Bank();
+            bank.setName("Rom Trust");
+            bank.setAddressLine1("line 1");
+            bank.setAddressLine2("line2");
+            bank.setCity("Philadelphia");
+            bank.setState("PA");
+            bank.setZipCode("12345");
+            bank.setCreatedBy("Kevin");
+            bank.setCreatedDate(new Date());
+            bank.setLastUpdatedBy("kmb");
+            bank.setLastUpdatedDate(new Date());
+            bank.setInternational(false);
 
-//        session.beginTransaction();
-//        final User lastUser = session.get(User.class, user.getUserId());
-//        user.setFirstName("Joe");
-//        session.update(lastUser);
-//        session.getTransaction().commit();
+            session.save(bank);
 
-        session.close();
+            transaction.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+            HibernateUtil.getSessionFactory().close();
+        }
     }
 }
