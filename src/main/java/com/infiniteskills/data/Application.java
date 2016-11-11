@@ -1,6 +1,7 @@
 package com.infiniteskills.data;
 
-import com.infiniteskills.data.entities.Bank;
+import com.infiniteskills.data.entities.Address;
+import com.infiniteskills.data.entities.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -10,32 +11,37 @@ import java.util.Date;
 public class Application {
 
     public static void main(String[] args) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
             Transaction transaction = session.beginTransaction();
 
-            Bank bank = new Bank();
-            bank.setName("Rom Trust");
-            bank.setAddressLine1("line 1");
-            bank.setAddressLine2("line2");
-            bank.setCity("Philadelphia");
-            bank.setState("PA");
-            bank.setZipCode("12345");
-            bank.setCreatedBy("Kevin");
-            bank.setCreatedDate(new Date());
-            bank.setLastUpdatedBy("kmb");
-            bank.setLastUpdatedDate(new Date());
-            bank.setInternational(false);
+            User user = new User();
+            Address address = new Address();
+            user.setAge(22);
+            user.setBirthDate(new Date());
+            user.setCreatedBy("Kevin");
+            user.setCreatedDate(new Date());
+            user.setEmailAddress("kmb3");
+            user.setFirstName("kevin");
+            user.setLastName("bowersox");
+            user.setLastUpdatedBy("kmb");
+            user.setLastUpdatedDate(new Date());
 
-            bank.addContact("MANAGER", "Joe");
-            bank.addContact("TELLER", "Mary");
+            address.setAddressLine1("line 1");
+            address.setAddressLine2("line2");
+            address.setCity("Philadelphia");
+            address.setState("PA");
+            address.setZipCode("12345");
 
-            session.save(bank);
+            user.setAddress(address);
+            session.save(user);
 
             transaction.commit();
 
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            session.close();
             HibernateUtil.getSessionFactory().close();
         }
     }

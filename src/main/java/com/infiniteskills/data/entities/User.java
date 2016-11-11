@@ -1,10 +1,12 @@
 package com.infiniteskills.data.entities;
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "FINANCES_USER")
+@Table(name = "finances_user")
 public class User {
 
     @Id
@@ -24,6 +26,11 @@ public class User {
     @Column(name = "EMAIL_ADDRESS")
     private String emailAddress;
 
+    @Embedded
+    @AttributeOverrides({@AttributeOverride(name = "addressLine1", column = @Column(name = "USER_ADDRESS_LINE_1")),
+            @AttributeOverride(name = "addressLine2", column = @Column(name = "USER_ADDRESS_LINE_2"))})
+    private Address address;
+
     @Column(name = "LAST_UPDATED_DATE")
     private Date lastUpdatedDate;
 
@@ -35,6 +42,9 @@ public class User {
 
     @Column(name = "CREATED_BY", updatable = false)
     private String createdBy;
+
+    @Formula("lower(datediff(curdate(), birth_date)/365)")
+    private int age;
 
     @Transient
     private boolean valid;
@@ -119,4 +129,19 @@ public class User {
         this.valid = valid;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 }
