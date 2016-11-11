@@ -16,11 +16,16 @@
         <!-- SQL dialect -->
         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
 
+        <property name="hibernate.id.new_generator_mappings">false</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+
 
         <!-- Echo all executed SQL to stdout -->
         <property name="show_sql">true</property>
 
         <mapping class="com.infiniteskills.data.entities.User"/>
+        <mapping class="com.infiniteskills.data.entities.Bank"/>
 
     </session-factory>
 

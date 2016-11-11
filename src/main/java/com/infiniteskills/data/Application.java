@@ -10,8 +10,7 @@ import java.util.Date;
 public class Application {
 
     public static void main(String[] args) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
 
             Bank bank = new Bank();
@@ -27,6 +26,9 @@ public class Application {
             bank.setLastUpdatedDate(new Date());
             bank.setInternational(false);
 
+            bank.addContact("MANAGER", "Joe");
+            bank.addContact("TELLER", "Mary");
+
             session.save(bank);
 
             transaction.commit();
@@ -34,7 +36,6 @@ public class Application {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            session.close();
             HibernateUtil.getSessionFactory().close();
         }
     }

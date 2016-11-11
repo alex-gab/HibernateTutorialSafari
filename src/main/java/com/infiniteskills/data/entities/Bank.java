@@ -2,9 +2,11 @@ package com.infiniteskills.data.entities;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
-@Table(name="BANK")
+@Table(name="bank")
 public class Bank {
 
     @Id
@@ -34,6 +36,12 @@ public class Bank {
 
     @Column(name="CREATED_BY")
     private String createdBy;
+
+    @ElementCollection
+    @CollectionTable(name = "bank_contact", joinColumns = @JoinColumn(name = "BANK_ID"))
+    @MapKeyColumn(name = "POSITION_TYPE")
+    @Column(name = "NAME")
+    private Map<String, String> contacts = new HashMap<>();
 
     public Long getBankId() {
         return bankId;
@@ -131,4 +139,11 @@ public class Bank {
         this.createdBy = createdBy;
     }
 
+    public Map<String, String> getContacts() {
+        return contacts;
+    }
+
+    public void addContact(String contactKey, String contactValue) {
+        this.contacts.put(contactKey, contactValue);
+    }
 }
