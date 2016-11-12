@@ -13,6 +13,10 @@ public class Transaction {
     @Column(name = "TRANSACTION_ID")
     private Long transactionId;
 
+    @ManyToOne
+    @JoinColumn(name = "ACCOUNT_ID")
+    private Account account;
+
     @Column(name = "TRANSACTION_TYPE")
     private String transactionType;
 
@@ -131,4 +135,11 @@ public class Transaction {
         this.createdBy = createdBy;
     }
 
+    public Account getAccount() {
+        return account;
+    }
+
+    void setAccount(Account account) {
+        this.account = account;
+    }
 }

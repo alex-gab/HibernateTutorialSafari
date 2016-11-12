@@ -11,9 +11,8 @@ import java.util.Date;
 public class Application {
 
     public static void main(String[] args) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
 
-        try {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             org.hibernate.Transaction transaction = session.beginTransaction();
 
             Account account = createNewAccount();
@@ -26,7 +25,6 @@ public class Application {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            session.close();
             HibernateUtil.getSessionFactory().close();
         }
     }

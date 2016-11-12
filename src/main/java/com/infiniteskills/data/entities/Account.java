@@ -14,8 +14,7 @@ public final class Account {
     @Column(name = "ACCOUNT_ID")
     private Long accountId;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ACCOUNT_ID", nullable = false)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
     Collection<Transaction> transactions = new ArrayList<>();
 
     @Column(name = "NAME")
@@ -131,5 +130,6 @@ public final class Account {
 
     public void addTransaction(Transaction transaction) {
         this.transactions.add(transaction);
+        transaction.setAccount(this);
     }
 }
