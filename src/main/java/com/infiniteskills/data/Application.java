@@ -1,6 +1,7 @@
 package com.infiniteskills.data;
 
 import com.infiniteskills.data.entities.Account;
+import com.infiniteskills.data.entities.Budget;
 import com.infiniteskills.data.entities.Transaction;
 import org.hibernate.Session;
 
@@ -16,12 +17,17 @@ public class Application {
             org.hibernate.Transaction transaction = session.beginTransaction();
 
             Account account = createNewAccount();
-            account.addTransaction(createNewBeltPurchase());
-            account.addTransaction(createShoePurchase());
-            session.save(account);
 
+            Budget budget = new Budget();
+            budget.setGoalAmount(new BigDecimal("10000.00"));
+            budget.setName("Emergency Fund");
+            budget.setPeriod("Yearly");
+
+            budget.setTransaction(createNewBeltPurchase(account));
+            budget.setTransaction(createShoePurchase(account));
+
+            session.save(budget);
             transaction.commit();
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -29,8 +35,9 @@ public class Application {
         }
     }
 
-    private static Transaction createNewBeltPurchase() {
+    private static Transaction createNewBeltPurchase(Account account) {
         Transaction beltPurchase = new Transaction();
+        beltPurchase.setAccount(account);
         beltPurchase.setTitle("Dress Belt");
         beltPurchase.setAmount(new BigDecimal("50.00"));
         beltPurchase.setClosingBalance(new BigDecimal("0.00"));
@@ -44,8 +51,9 @@ public class Application {
         return beltPurchase;
     }
 
-    private static Transaction createShoePurchase() {
+    private static Transaction createShoePurchase(Account account) {
         Transaction shoePurchase = new Transaction();
+        shoePurchase.setAccount(account);
         shoePurchase.setTitle("Work Shoes");
         shoePurchase.setAmount(new BigDecimal("100.00"));
         shoePurchase.setClosingBalance(new BigDecimal("0.00"));

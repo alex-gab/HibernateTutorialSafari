@@ -13,7 +13,7 @@ public class Transaction {
     @Column(name = "TRANSACTION_ID")
     private Long transactionId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
@@ -139,7 +139,7 @@ public class Transaction {
         return account;
     }
 
-    void setAccount(Account account) {
+    public void setAccount(Account account) {
         this.account = account;
     }
 }
