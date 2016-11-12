@@ -3,7 +3,9 @@ package com.infiniteskills.data.entities;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "finances_user")
@@ -26,10 +28,11 @@ public class User {
     @Column(name = "EMAIL_ADDRESS")
     private String emailAddress;
 
-    @Embedded
+    @ElementCollection
+    @CollectionTable(name = "user_address", joinColumns = @JoinColumn(name = "USER_ID"))
     @AttributeOverrides({@AttributeOverride(name = "addressLine1", column = @Column(name = "USER_ADDRESS_LINE_1")),
             @AttributeOverride(name = "addressLine2", column = @Column(name = "USER_ADDRESS_LINE_2"))})
-    private Address address;
+    private List<Address> addresses = new ArrayList<>();
 
     @Column(name = "LAST_UPDATED_DATE")
     private Date lastUpdatedDate;
@@ -137,11 +140,11 @@ public class User {
         this.age = age;
     }
 
-    public Address getAddress() {
-        return address;
+    public List<Address> getAddresses() {
+        return addresses;
     }
 
     public void setAddress(Address address) {
-        this.address = address;
+        this.addresses.add(address);
     }
 }
