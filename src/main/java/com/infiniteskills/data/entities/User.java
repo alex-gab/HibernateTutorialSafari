@@ -16,6 +16,9 @@ public class User {
     @Column(name = "USER_ID")
     private Long userId;
 
+    @OneToOne(mappedBy = "user")
+    private Credential credential;
+
     @Column(name = "FIRST_NAME")
     private String firstName;
 
@@ -146,5 +149,13 @@ public class User {
 
     public void setAddress(Address address) {
         this.addresses.add(address);
+    }
+
+    public Credential getCredential() {
+        return credential;
+    }
+
+    void setCredential(Credential credential) {
+        this.credential = credential;
     }
 }
