@@ -27,6 +27,8 @@
         <mapping class="com.infiniteskills.data.entities.User"/>
         <mapping class="com.infiniteskills.data.entities.Bank"/>
         <mapping class="com.infiniteskills.data.entities.Credential"/>
+        <mapping class="com.infiniteskills.data.entities.Account"/>
+        <mapping class="com.infiniteskills.data.entities.Transaction"/>
 
     </session-factory>
 
