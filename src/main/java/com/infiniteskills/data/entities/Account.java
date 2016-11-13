@@ -142,5 +142,6 @@ public final class Account {
 
     public void addUser(User user) {
         this.users.add(user);
+        user.addAccount(this);
     }
 }

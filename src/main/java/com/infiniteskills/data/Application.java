@@ -30,12 +30,12 @@ public class Application {
             session.save(account);
             session.save(account2);
 
+            session.flush();
+
             transaction.commit();
 
-            Account dbAccount = session.get(Account.class, account.getAccountId());
-            System.out.println(dbAccount.getUsers().iterator().next().getEmailAddress());
-
-
+            User dbUser = session.get(User.class, user.getUserId());
+            System.out.println(dbUser.getAccounts().iterator().next().getName());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

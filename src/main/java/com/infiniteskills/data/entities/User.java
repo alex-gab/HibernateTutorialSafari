@@ -3,9 +3,7 @@ package com.infiniteskills.data.entities;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "finances_user")
@@ -15,6 +13,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
     private Long userId;
+
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "users")
+    private Set<Account> accounts = new HashSet<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Credential credential;
@@ -155,7 +156,16 @@ public class User {
         return credential;
     }
 
-    public void setCredential(Credential credential) {
+    void setCredential(Credential credential) {
         this.credential = credential;
+    }
+
+    public Set<Account> getAccounts() {
+        return accounts;
+    }
+
+
+    public void addAccount(Account account) {
+        accounts.add(account);
     }
 }
