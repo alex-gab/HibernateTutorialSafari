@@ -8,7 +8,7 @@
     <session-factory>
 
         <!-- Database connection settings -->
-        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <!--<property name="connection.driver_class">com.mysql.jdbc.Driver</property>-->
         <property name="connection.url">jdbc:mysql://localhost:3306/ifinances?useSSL=false</property>
         <property name="connection.username">infinite</property>
         <property name="connection.password">skills</property>
