@@ -2,9 +2,7 @@ package com.infiniteskills.data.entities;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 @Table(name = "account")
@@ -13,6 +11,11 @@ public final class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ACCOUNT_ID")
     private Long accountId;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_account", joinColumns = @JoinColumn(name = "ACCOUNT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "USER_ID"))
+    private Set<User> users = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
     Collection<Transaction> transactions = new ArrayList<>();
@@ -131,5 +134,13 @@ public final class Account {
     public void addTransaction(Transaction transaction) {
         this.transactions.add(transaction);
         transaction.setAccount(this);
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void addUser(User user) {
+        this.users.add(user);
     }
 }

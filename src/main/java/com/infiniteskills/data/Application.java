@@ -1,8 +1,9 @@
 package com.infiniteskills.data;
 
 import com.infiniteskills.data.entities.Account;
-import com.infiniteskills.data.entities.Budget;
-import com.infiniteskills.data.entities.Transaction;
+import com.infiniteskills.data.entities.Address;
+import com.infiniteskills.data.entities.Credential;
+import com.infiniteskills.data.entities.User;
 import org.hibernate.Session;
 
 import java.math.BigDecimal;
@@ -17,17 +18,24 @@ public class Application {
             org.hibernate.Transaction transaction = session.beginTransaction();
 
             Account account = createNewAccount();
+            Account account2 = createNewAccount();
+            User user = createUser();
+            User user2 = createUser();
 
-            Budget budget = new Budget();
-            budget.setGoalAmount(new BigDecimal("10000.00"));
-            budget.setName("Emergency Fund");
-            budget.setPeriod("Yearly");
+            account.addUser(user);
+            account.addUser(user2);
+            account2.addUser(user);
+            account2.addUser(user2);
 
-            budget.setTransaction(createNewBeltPurchase(account));
-            budget.setTransaction(createShoePurchase(account));
+            session.save(account);
+            session.save(account2);
 
-            session.save(budget);
             transaction.commit();
+
+            Account dbAccount = session.get(Account.class, account.getAccountId());
+            System.out.println(dbAccount.getUsers().iterator().next().getEmailAddress());
+
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -35,36 +43,38 @@ public class Application {
         }
     }
 
-    private static Transaction createNewBeltPurchase(Account account) {
-        Transaction beltPurchase = new Transaction();
-        beltPurchase.setAccount(account);
-        beltPurchase.setTitle("Dress Belt");
-        beltPurchase.setAmount(new BigDecimal("50.00"));
-        beltPurchase.setClosingBalance(new BigDecimal("0.00"));
-        beltPurchase.setCreatedBy("Kevin Bowersox");
-        beltPurchase.setCreatedDate(new Date());
-        beltPurchase.setInitialBalance(new BigDecimal("0.00"));
-        beltPurchase.setLastUpdatedBy("Kevin Bowersox");
-        beltPurchase.setLastUpdatedDate(new Date());
-        beltPurchase.setNotes("New Dress Belt");
-        beltPurchase.setTransactionType("Debit");
-        return beltPurchase;
+    private static User createUser() {
+        User user = new User();
+        user.setAddress(createAddress());
+        user.setBirthDate(new Date());
+        user.setCreatedBy("Kevin Bowersox");
+        user.setCreatedDate(new Date());
+        createCredential(user);
+        user.setEmailAddress("test@test.com");
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setLastUpdatedBy("system");
+        user.setLastUpdatedDate(new Date());
+        return user;
     }
 
-    private static Transaction createShoePurchase(Account account) {
-        Transaction shoePurchase = new Transaction();
-        shoePurchase.setAccount(account);
-        shoePurchase.setTitle("Work Shoes");
-        shoePurchase.setAmount(new BigDecimal("100.00"));
-        shoePurchase.setClosingBalance(new BigDecimal("0.00"));
-        shoePurchase.setCreatedBy("Kevin Bowersox");
-        shoePurchase.setCreatedDate(new Date());
-        shoePurchase.setInitialBalance(new BigDecimal("0.00"));
-        shoePurchase.setLastUpdatedBy("Kevin Bowersox");
-        shoePurchase.setLastUpdatedDate(new Date());
-        shoePurchase.setNotes("Nice Pair of Shoes");
-        shoePurchase.setTransactionType("Debit");
-        return shoePurchase;
+    private static Credential createCredential(User user) {
+        Credential credential = new Credential();
+        credential.setUser(user);
+        credential.setUsername("test_username");
+        credential.setPassword("test_password");
+        return credential;
+    }
+
+    private static Address createAddress() {
+        Address address = new Address();
+        address.setAddressLine1("101 Address Line");
+        address.setAddressLine2("102 Address Line");
+        address.setCity("New York");
+        address.setState("PA");
+        address.setZipCode("10000");
+        address.setAddressType("PRIMARY");
+        return address;
     }
 
     private static Account createNewAccount() {

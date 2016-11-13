@@ -16,7 +16,7 @@ public class User {
     @Column(name = "USER_ID")
     private Long userId;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Credential credential;
 
     @Column(name = "FIRST_NAME")
@@ -155,7 +155,7 @@ public class User {
         return credential;
     }
 
-    void setCredential(Credential credential) {
+    public void setCredential(Credential credential) {
         this.credential = credential;
     }
 }
