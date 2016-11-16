@@ -18,7 +18,7 @@ public final class Account {
     private Set<User> users = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
-    Collection<Transaction> transactions = new ArrayList<>();
+    private Collection<Transaction> transactions = new ArrayList<>();
 
     @Column(name = "NAME")
     private String name;
