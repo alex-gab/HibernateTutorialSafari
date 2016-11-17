@@ -11,6 +11,7 @@
     <modules>
         <module>hibernate</module>
         <module>jpa</module>
+        <module>advanced</module>
     </modules>
 
     <properties>
