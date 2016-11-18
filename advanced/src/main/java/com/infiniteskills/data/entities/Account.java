@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
-@Table(name = "ACCOUNT")
+@Table(name = "account")
 public class Account {
 
 	@Id
@@ -21,8 +21,12 @@ public class Account {
 	@JoinColumn(name = "BANK_ID")
 	private Bank bank;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ACCOUNT_TYPE")
+	private AccountType accountType;
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
-	List<Transaction> transactions = new ArrayList<>();
+    private List<Transaction> transactions = new ArrayList<>();
 
 	@Column(name = "NAME")
 	private String name;
@@ -147,4 +151,11 @@ public class Account {
 		this.users = users;
 	}
 
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
 }

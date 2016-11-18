@@ -17,20 +17,16 @@ public class Application {
         try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory(); Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
 
-            Currency currency = new Currency();
-            currency.setCountryName("Uk");
-            currency.setName("Pound");
-            currency.setSymbol("Pound Sign");
+            Account account = createNewAccount();
+            account.setAccountType(AccountType.SAVINGS);
 
-            Market market = new Market();
-            market.setMarketName("London Stock Exchange");
-            market.setCurrency(currency);
-
-            session.persist(market);
+            session.save(account);
             tx.commit();
 
-            Market dbMarket = session.get(Market.class, market.getMarketId());
-            System.out.println(dbMarket.getCurrency().getName());
+            Account dbAccount = session.get(Account.class, account.getAccountId());
+            System.out.println(dbAccount.getName());
+            System.out.println(dbAccount.getAccountType());
+
         } catch (Exception e) {
             e.printStackTrace();
             if (tx != null) {
