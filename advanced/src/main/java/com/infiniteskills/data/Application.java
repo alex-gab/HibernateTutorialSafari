@@ -14,18 +14,17 @@ public class Application {
     public static void main(String[] args) {
         org.hibernate.Transaction tx = null;
 
-        try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory(); Session session = sessionFactory.openSession()) {
+        try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+             Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
 
-            Account account = createNewAccount();
-            account.setAccountType(AccountType.SAVINGS);
+            Stock stock = createStock();
+            session.save(stock);
 
-            session.save(account);
+            Bond bond = createBond();
+            session.save(bond);
+
             tx.commit();
-
-            Account dbAccount = session.get(Account.class, account.getAccountId());
-            System.out.println(dbAccount.getName());
-            System.out.println(dbAccount.getAccountType());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -33,6 +32,27 @@ public class Application {
                 tx.rollback();
             }
         }
+    }
+
+    private static Bond createBond() {
+        Bond bond = new Bond();
+        bond.setInterestRate(new BigDecimal("123.22"));
+        bond.setIssuer("BRD");
+        bond.setMaturityDate(new Date());
+        bond.setPurchaseDate(new Date());
+        bond.setName("Long Term Bond Purchases");
+        bond.setValue(new BigDecimal("10.22"));
+        return bond;
+    }
+
+    private static Stock createStock() {
+        Stock stock = new Stock();
+        stock.setIssuer("Alex Dragoi");
+        stock.setName("BVB");
+        stock.setPurchaseDate(new Date());
+        stock.setQuantity(new BigDecimal("1922"));
+        stock.setSharePrice(new BigDecimal("100.00"));
+        return stock;
     }
 
     private static Bank createBank() {
