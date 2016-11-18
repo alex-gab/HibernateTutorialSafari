@@ -1,7 +1,6 @@
 package com.infiniteskills.data;
 
 import com.infiniteskills.data.entities.*;
-import com.infiniteskills.data.entities.ids.CurrencyId;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -13,39 +12,29 @@ import java.util.Date;
 public class Application {
 
     public static void main(String[] args) {
-
-        Session session2 = null;
         org.hibernate.Transaction tx = null;
-        org.hibernate.Transaction tx2 = null;
 
-        try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-             Session session = sessionFactory.openSession()) {
+        try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory(); Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
 
             Currency currency = new Currency();
-            currency.setCountryName("United States");
-            currency.setName("Dollar");
-            currency.setSymbol("$");
+            currency.setCountryName("Uk");
+            currency.setName("Pound");
+            currency.setSymbol("Pound Sign");
 
-            session.persist(currency);
+            Market market = new Market();
+            market.setMarketName("London Stock Exchange");
+            market.setCurrency(currency);
+
+            session.persist(market);
             tx.commit();
 
-            session2 = sessionFactory.openSession();
-            tx2 = session2.beginTransaction();
-
-            Currency dbCurrency = session2.get(Currency.class,
-                    new CurrencyId("Dollar", "United States"));
-            System.out.println(dbCurrency.getName());
-
-            tx2.commit();
-
+            Market dbMarket = session.get(Market.class, market.getMarketId());
+            System.out.println(dbMarket.getCurrency().getName());
         } catch (Exception e) {
             e.printStackTrace();
             if (tx != null) {
                 tx.rollback();
-            }
-            if (tx2 != null) {
-                tx2.rollback();
             }
         }
     }
