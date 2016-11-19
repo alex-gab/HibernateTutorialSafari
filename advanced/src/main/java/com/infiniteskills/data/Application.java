@@ -49,7 +49,7 @@ public class Application {
     private static Bond createBond() {
         Bond bond = new Bond();
         bond.setInterestRate(new BigDecimal("123.22"));
-        bond.setIssuer("BRD");
+        bond.setIssuer("JP Morgan Chase");
         bond.setMaturityDate(new Date());
         bond.setPurchaseDate(new Date());
         bond.setName("Long Term Bond Purchases");
@@ -59,8 +59,8 @@ public class Application {
 
     private static Stock createStock() {
         Stock stock = new Stock();
-        stock.setIssuer("Alex Dragoi");
-        stock.setName("BVB");
+        stock.setIssuer("Allen Edmonds");
+        stock.setName("Private American Stock Purchases");
         stock.setPurchaseDate(new Date());
         stock.setQuantity(new BigDecimal("1922"));
         stock.setSharePrice(new BigDecimal("100.00"));

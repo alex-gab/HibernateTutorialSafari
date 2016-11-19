@@ -6,6 +6,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "bond")
+@DiscriminatorValue("BND")
 public class Bond extends Investment {
     @Column(name = "VALUE")
     private BigDecimal value;

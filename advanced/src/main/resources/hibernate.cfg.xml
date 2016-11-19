@@ -35,6 +35,7 @@
 		<mapping class="com.infiniteskills.data.entities.Stock"/>
 		<mapping class="com.infiniteskills.data.entities.Bond"/>
 		<mapping class="com.infiniteskills.data.entities.Portfolio"/>
+		<mapping class="com.infiniteskills.data.entities.Investment"/>
     </session-factory>
 
 
