@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "FINANCES_USER")
+@Table(name = "finances_user")
 public class User {
 
 	@Id
@@ -15,7 +15,7 @@ public class User {
 	private Long userId;
 
 	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "users")
-	private Set<Account> accounts = new HashSet<Account>();
+	private Set<Account> accounts = new HashSet<>();
 
 	@OneToOne(mappedBy = "user")
 	private Credential credential;
@@ -33,11 +33,11 @@ public class User {
 	private String emailAddress;
 
 	@ElementCollection
-	@CollectionTable(name = "USER_ADDRESS", joinColumns = @JoinColumn(name = "USER_ID"))
+	@CollectionTable(name = "user_address", joinColumns = @JoinColumn(name = "USER_ID"))
 	@AttributeOverrides({
 			@AttributeOverride(name = "addressLine1", column = @Column(name = "USER_ADDRESS_LINE_1")),
 			@AttributeOverride(name = "addressLine2", column = @Column(name = "USER_ADDRESS_LINE_2")) })
-	private List<Address> addresses = new ArrayList<Address>();
+	private List<Address> addresses = new ArrayList<>();
 
 	@Column(name = "LAST_UPDATED_DATE")
 	private Date lastUpdatedDate;

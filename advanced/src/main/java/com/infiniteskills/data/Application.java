@@ -1,5 +1,7 @@
 package com.infiniteskills.data;
 
+import com.infiniteskills.data.dao.UserHibernateDao;
+import com.infiniteskills.data.dao.interfaces.UserDao;
 import com.infiniteskills.data.entities.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,28 +17,16 @@ public class Application {
         org.hibernate.Transaction tx = null;
 
         try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory(); Session session = sessionFactory.openSession()) {
+            UserDao dao = new UserHibernateDao();
+            dao.setSession(session);
+
             tx = session.beginTransaction();
 
-            Portfolio portfolio = new Portfolio();
-            portfolio.setName("First Investments");
+            User user = createUser();
 
-            Stock stock = createStock();
-            stock.setPortfolio(portfolio);
-
-            Bond bond = createBond();
-            bond.setPortfolio(portfolio);
-
-            session.save(stock);
-            session.save(bond);
+            dao.save(user);
 
             tx.commit();
-
-            Portfolio dbPortfolio = session.get(Portfolio.class, portfolio.getPortfolioId());
-            session.refresh(dbPortfolio);
-
-            for (Investment i : dbPortfolio.getInvestements()) {
-                System.out.println(i.getName());
-            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,7 +79,7 @@ public class Application {
         Address address = createAddress();
         user.setAddresses(Collections.singletonList(createAddress()));
         user.setBirthDate(new Date());
-        user.setCreatedBy("Kevin Bowersox");
+        user.setCreatedBy("Alex Dragoi");
         user.setCreatedDate(new Date());
         user.setCredential(createCredential(user));
         user.setEmailAddress("test@test.com");
