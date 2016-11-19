@@ -14,17 +14,29 @@ public class Application {
     public static void main(String[] args) {
         org.hibernate.Transaction tx = null;
 
-        try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-             Session session = sessionFactory.openSession()) {
+        try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory(); Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
 
+            Portfolio portfolio = new Portfolio();
+            portfolio.setName("First Investments");
+
             Stock stock = createStock();
-            session.save(stock);
+            stock.setPortfolio(portfolio);
 
             Bond bond = createBond();
+            bond.setPortfolio(portfolio);
+
+            session.save(stock);
             session.save(bond);
 
             tx.commit();
+
+            Portfolio dbPortfolio = session.get(Portfolio.class, portfolio.getPortfolioId());
+            session.refresh(dbPortfolio);
+
+            for (Investment i : dbPortfolio.getInvestements()) {
+                System.out.println(i.getName());
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
