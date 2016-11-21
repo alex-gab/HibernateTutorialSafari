@@ -2,10 +2,12 @@ package com.infiniteskills.data.dao;
 
 import com.infiniteskills.data.HibernateUtil;
 import com.infiniteskills.data.dao.interfaces.Dao;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Criterion;
+import org.hibernate.query.Query;
 
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -47,13 +49,16 @@ public class AbstractDao<T, ID extends Serializable> implements Dao<T, ID> {
     }
 
     @SuppressWarnings("unchecked")
-    protected List<T> findByCriteria(Criterion... criterion) {
-        Criteria crit = this.getSession().createCriteria(this.getPersistentClass());
+    protected List<T> findByCriteria(Predicate... restricitions) {
+        final CriteriaQuery<T> query = this.getSession().getCriteriaBuilder().createQuery(this.getPersistentClass());
 
-        for (Criterion c : criterion) {
-            crit.add(c);
-        }
-        return (List<T>) crit.list();
+        final Root<T> c = query.from(this.getPersistentClass());
+        query.where(restricitions);
+        query.select(c);
+        final Query<T> q = this.getSession().createQuery(query);
+        q.setCacheable(true);
+
+        return q.list();
 
     }
 
