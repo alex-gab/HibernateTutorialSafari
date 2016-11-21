@@ -17,7 +17,7 @@ public class User {
 	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "users")
 	private Set<Account> accounts = new HashSet<>();
 
-	@OneToOne(mappedBy = "user")
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private Credential credential;
 
 	@Column(name = "FIRST_NAME")

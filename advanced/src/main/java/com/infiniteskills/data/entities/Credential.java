@@ -3,7 +3,7 @@ package com.infiniteskills.data.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name="CREDENTIAL")
+@Table(name="credential")
 public class Credential {
 
 	@Id

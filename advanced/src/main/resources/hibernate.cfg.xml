@@ -36,6 +36,7 @@
 		<mapping class="com.infiniteskills.data.entities.Bond"/>
 		<mapping class="com.infiniteskills.data.entities.Portfolio"/>
 		<mapping class="com.infiniteskills.data.entities.Investment"/>
+		<mapping class="com.infiniteskills.data.entities.UserCredentialView"/>
     </session-factory>
 
 

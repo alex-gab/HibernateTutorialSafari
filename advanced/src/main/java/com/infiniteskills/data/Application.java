@@ -1,7 +1,5 @@
 package com.infiniteskills.data;
 
-import com.infiniteskills.data.dao.UserHibernateDao;
-import com.infiniteskills.data.dao.interfaces.UserDao;
 import com.infiniteskills.data.entities.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,15 +14,13 @@ public class Application {
     public static void main(String[] args) {
         org.hibernate.Transaction tx = null;
 
-        try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory(); Session session = sessionFactory.openSession()) {
-            UserDao dao = new UserHibernateDao();
-            dao.setSession(session);
-
+        try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+             Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
 
-            User user = createUser();
-
-            dao.save(user);
+            UserCredentialView view = session.get(UserCredentialView.class, 3L);
+            System.out.println(view.getFirstName());
+            System.out.println(view.getLastName());
 
             tx.commit();
 
