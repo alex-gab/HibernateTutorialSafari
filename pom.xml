@@ -12,6 +12,7 @@
         <module>hibernate</module>
         <module>jpa</module>
         <module>advanced</module>
+        <module>hqlandjpql</module>
     </modules>
 
     <properties>
